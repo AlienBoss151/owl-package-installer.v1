@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: opi
+Version: 1.1.0
+Summary: Owl wizard package builder for Python projects
+Home-page: https://github.com/AlienBoss151/owl-package-installer.v1
+Author: Lordcarlos Onwuka
+Author-email: lordcarlos151@gmail.com
+License: Apache-2.0
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.10
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-python
+Dynamic: summary
