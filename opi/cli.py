@@ -8,7 +8,7 @@ import argparse
 from datetime import datetime
 import urllib.request
 
-VERSION = "V1.02 OPI"
+VERSION = "V1.0 OPI"
 LOG_DIR = os.path.join(os.path.expanduser("~"), ".owl_dev", "owl_logs")
 LOG_FILE = os.path.join(LOG_DIR, "owl_dev_installer.logs")
 REG_URL = "https://your-private-server.com/api/register_user"    # <-- Change to your backend endpoint
@@ -70,28 +70,28 @@ def installer():
     country = get_country()
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_data = f"""
-🦉 Owl Installer Log
+🦉 Owl dev Installer Log
 Version: {VERSION}
 Time: {timestamp}
-Location: {country}
+Installed at : {country}
 Host: {socket.gethostname()}
-OS: {platform.system()} {platform.release()}
+Running: {platform.system()} {platform.release()}
 Python: {platform.python_version()}
 Pip: {subprocess.getoutput("pip --version")}
-Root Folder: {os.getcwd()}
+Path: {os.getcwd()}
 """
     write_log(log_data)
     print(f"📡 Owl log created at: {LOG_FILE}")
     print(f"🌍 Location detected: {country}")
 
-    # Step 1b: Register user for backend analytics (private)
+    # Step 1b: installer log
     user_registration(log_data)
 
     # Step 2: Check global app status (remote kill-switch)
     if not check_global_status():
         sys.exit(1)
 
-    print("🧠 Owl is preparing your environment...")
+    print("🧠 Owl is preparing your python environment...")
 
     # Step 3: Ask for environment type
     print("\nSelect environment type to create:")
@@ -147,7 +147,7 @@ Root Folder: {os.getcwd()}
 
     # Step 6: Retry failed packages
     if failed:
-        print("\n🔁 Owl is retrying failed packages...")
+        print("\n🔁 Please wait Owl wizard is retrying failed packages...")
         for pkg in failed:
             try:
                 subprocess.run([sys.executable, "-m", "pip", "install", pkg])
@@ -155,12 +155,12 @@ Root Folder: {os.getcwd()}
             except Exception as e:
                 print(f"❌ Still failed: {pkg}")
 
-    print("\n🎉 Owl Installer completed.")
-    print(f"📄 View logs at: {LOG_FILE}")
+    print("\n🎉 Congrats Owl wizard Installer has build completed project required packages.")
+    print(f"📄 Your project is ready You can View logs at: {LOG_FILE}")
     print("🦉 If anything breaks, re-run 'opi' from your project root!")
 
 def main():
-    parser = argparse.ArgumentParser(description="OWL PACKAGE MANAGER INSTALLER")
+    parser = argparse.ArgumentParser(description="OWL PACKAGE WIZARD INSTALLER")
     parser.add_argument("--version", action="store_true", help="Show version and log info")
     args = parser.parse_args()
 
