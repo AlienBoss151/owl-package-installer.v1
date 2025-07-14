@@ -1,8 +1,9 @@
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from datetime import datetime
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates")
 
 USERS_FILE = "users.json"
 APP_ENABLED = True  # Change to False to globally disable opi
@@ -20,9 +21,14 @@ def save_users(users):
 
 @app.route("/api/register_user", methods=["POST"])
 def register_user():
+    if request.method != "POST":
+        return jsonify({"error": "Method Not Allowed"}), 405
+
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid JSON"}), 400
+
     users = load_users()
-    # Use host+timestamp as unique key to avoid overwriting
     key = f"{data.get('host', 'unknown')}_{data.get('timestamp', datetime.utcnow().isoformat())}"
     users[key] = data
     save_users(users)
@@ -37,14 +43,23 @@ def user_count():
     users = load_users()
     return jsonify({"user_count": len(users)})
 
+@app.route("/users", methods=["GET"])
+def show_users():
+    users = load_users()
+    return render_template("users.html", users=users.values(), count=len(users))
+
 @app.route("/")
 def index():
     return (
-        "OWL Backend API<br>"
-        "/api/register_user (POST: register)<br>"
-        "/api/app_status (GET: global enable/disable)<br>"
-        "/api/user_count (GET: total registered users)"
+        "<h2>🦉 OWL Backend API</h2>"
+        "<ul>"
+        "<li><strong>POST</strong> /api/register_user — Register user</li>"
+        "<li><strong>GET</strong> /api/app_status — Check global enable/disable</li>"
+        "<li><strong>GET</strong> /api/user_count — Total registered users</li>"
+        "<li><strong>GET</strong> /users — View registered users in HTML</li>"
+        "</ul>"
     )
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
