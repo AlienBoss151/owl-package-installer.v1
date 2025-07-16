@@ -16,8 +16,8 @@ BRAIN_DIR = os.path.join(CURRENT_DIR, ".owl_brain")
 CHILD_LOG = os.path.join(BRAIN_DIR, "activate_owl_child.logs")
 LOG_DIR = os.path.join(os.path.expanduser("~"), ".owl_dev", "owl_logs")
 LOG_FILE = os.path.join(LOG_DIR, "owl_dev_installer.logs")
-REG_URL = "https://api/register_user"
-STATUS_URL = "https://my/api/app_status"
+REG_URL = "https://owl-package-installer-v1.onrender.com/api/register_user"
+STATUS_URL = "https://owl-package-installer-v1.onrender.com/api/app_status"
 
 def color(text, code="36"):
     return f"\033[{code}m{text}\033[0m"
